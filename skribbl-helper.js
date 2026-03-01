@@ -254,6 +254,10 @@
 
   function getCluePattern() {
     const selectors = [
+      '#currentWord',
+      '[id*="current"][id*="word"]',
+      '[class*="current"][class*="word"]',
+      '.guessWord',
       '.word',
       '.wordContainer',
       '.word__container',
@@ -275,10 +279,30 @@
       }
     }
 
-    const all = document.querySelectorAll('div,span,p,strong');
+    // Fallback: scan common visible text containers in case classes/ids changed.
+    const all = document.querySelectorAll('div,span,p,strong,b,em,li,td,h1,h2,h3,h4');
     for (const node of all) {
+      const style = window.getComputedStyle(node);
+      if (style.display === 'none' || style.visibility === 'hidden') continue;
+
       const candidate = readPatternCandidate(node);
       if (candidate && candidate.includes('_')) return candidate;
+    }
+
+    // Last-resort fallback: parse body text lines for placeholder-like mask tokens.
+    const lines = (document.body && document.body.innerText ? document.body.innerText : '')
+      .split(/\r?\n/)
+      .map((line) => normalizePatternFromRaw(line))
+      .filter(Boolean);
+
+    for (const line of lines) {
+      const words = line.split(' ');
+      if (words.length > 4) continue;
+      if (!line.includes('_')) continue;
+      if (line.length < 2 || line.length > 30) continue;
+      if (words.every((w) => /^_+$/.test(w) || /^[a-z_]+$/.test(w))) {
+        return line;
+      }
     }
 
     return null;
