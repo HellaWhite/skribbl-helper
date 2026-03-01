@@ -40,6 +40,30 @@
       .trim();
   }
 
+  function normalizePatternFromRaw(raw) {
+    const source = String(raw || '').replace(/\u00a0/g, ' ');
+    let out = '';
+
+    for (const ch of source) {
+      const lower = ch.toLowerCase();
+      if (/[a-z]/.test(lower)) {
+        out += lower;
+        continue;
+      }
+
+      if (/[_*\-•·‒–—―]/.test(ch)) {
+        out += '_';
+        continue;
+      }
+
+      if (/\s/.test(ch)) {
+        out += ' ';
+      }
+    }
+
+    return out.replace(/\s+/g, ' ').trim();
+  }
+
   function removeUI() {
     const oldUI = document.getElementById(UI_ID);
     if (oldUI) oldUI.remove();
@@ -211,10 +235,11 @@
   }
 
   function readPatternCandidate(el) {
-    const txt = normalizeText(el.textContent || '');
+    const raw = String(el.textContent || '');
+    const txt = normalizePatternFromRaw(raw);
     if (!txt) return null;
 
-    const hasUnderscoreStyle = /[_*]/.test(el.textContent || '');
+    const hasUnderscoreStyle = /[_*\-•·‒–—―]/.test(raw);
     const mostlyLettersSpacesUnderscores = /^[a-z\s_]+$/.test(txt.replace(/_/g, '_'));
     if (!hasUnderscoreStyle && !mostlyLettersSpacesUnderscores) return null;
 
@@ -232,6 +257,10 @@
       '.word',
       '.wordContainer',
       '.word__container',
+      '.currentWord',
+      '.hints',
+      '.hints__container',
+      '[class*="hint"]',
       '[class*="word"]',
       '[id*="word"]',
       '.current-word',
@@ -256,7 +285,7 @@
   }
 
   function patternToRegex(pattern) {
-    const cleaned = normalizeText(pattern)
+    const cleaned = normalizePatternFromRaw(pattern)
       .replace(/\s+/g, ' ')
       .trim();
 
@@ -291,7 +320,7 @@
   function matchWords(pattern) {
     if (!state.wordsReady || !pattern) return [];
 
-    const normalizedPattern = normalizeText(pattern);
+    const normalizedPattern = normalizePatternFromRaw(pattern);
     const regex = patternToRegex(normalizedPattern);
     const patternParts = normalizedPattern.split(' ');
 
@@ -401,6 +430,8 @@
     `;
 
     document.body.appendChild(root);
+    positionUI(root);
+    window.addEventListener('resize', () => positionUI(root));
 
     document.getElementById(`${UI_ID}-close`).addEventListener('click', () => {
       stopAutoRefresh();
@@ -431,6 +462,27 @@
 
     startAutoRefresh();
     fetchWordList().then(renderMatches);
+  }
+
+  function positionUI(root) {
+    if (!root || !document.body.contains(root)) return;
+
+    const chat = document.querySelector('#boxMessages, .chat, [id*="chat"], [class*="chat"]');
+    if (chat) {
+      const rect = chat.getBoundingClientRect();
+      const panelWidth = Math.min(400, Math.floor(window.innerWidth * 0.94));
+      const left = Math.max(8, rect.left - panelWidth - 8);
+      const top = Math.max(8, rect.top);
+
+      root.style.left = `${left}px`;
+      root.style.top = `${top}px`;
+      root.style.right = 'auto';
+      return;
+    }
+
+    root.style.top = '12px';
+    root.style.right = '12px';
+    root.style.left = 'auto';
   }
 
   buildUI();
