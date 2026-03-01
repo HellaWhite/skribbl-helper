@@ -1,224 +1,437 @@
-// Skribbl.io Word Helper - External Script
-(function() {
-    'use strict';
-    
-    const wordLists = {
-        single: [
-            'cat', 'dog', 'house', 'tree', 'car', 'sun', 'moon', 'star', 'fish', 'bird',
-            'book', 'chair', 'table', 'door', 'window', 'phone', 'computer', 'flower', 'rainbow', 'butterfly',
-            'elephant', 'giraffe', 'monkey', 'tiger', 'lion', 'bear', 'snake', 'turtle', 'rabbit', 'horse',
-            'pizza', 'burger', 'apple', 'banana', 'orange', 'grape', 'watermelon', 'strawberry', 'cookie', 'cake',
-            'icecream', 'chocolate', 'candy', 'bread', 'cheese', 'milk', 'water', 'coffee', 'tea', 'juice',
-            'soda', 'guitar', 'piano', 'drums', 'trumpet', 'violin', 'microphone', 'camera', 'television', 'radio',
-            'clock', 'watch', 'lamp', 'couch', 'bed', 'pillow', 'blanket', 'towel', 'soap', 'shampoo',
-            'toothbrush', 'mirror', 'scissors', 'pencil', 'eraser', 'ruler', 'backpack', 'umbrella', 'glasses', 'hat',
-            'shoes', 'shirt', 'pants', 'dress', 'jacket', 'gloves', 'scarf', 'sock', 'ring', 'necklace',
-            'crown', 'sword', 'shield', 'bow', 'arrow', 'hammer', 'screwdriver', 'wrench', 'ladder', 'rope',
-            'basket', 'bucket', 'bottle', 'cup', 'plate', 'fork', 'spoon', 'knife', 'pot', 'pan',
-            'oven', 'fridge', 'microwave', 'blender', 'toaster', 'grill', 'boat', 'ship', 'airplane', 'helicopter',
-            'rocket', 'train', 'bicycle', 'motorcycle', 'truck', 'bus', 'fire', 'smoke', 'cloud', 'lightning',
-            'thunder', 'rain', 'snow', 'ice', 'wind', 'earthquake', 'volcano', 'mountain', 'hill', 'valley',
-            'desert', 'forest', 'jungle', 'beach', 'ocean', 'river', 'lake', 'pond', 'island', 'bridge',
-            'castle', 'tower', 'church', 'hospital', 'school', 'library', 'museum', 'bank', 'store', 'restaurant',
-            'hotel', 'farm', 'barn', 'fence', 'gate', 'garden', 'playground', 'park', 'zoo', 'circus',
-            'fair', 'carnival', 'rodeo', 'concert', 'theater', 'stadium', 'gym', 'pool', 'rink', 'court',
-            'field', 'track', 'race', 'game', 'sport', 'ball', 'bat', 'glove', 'helmet', 'trophy',
-            'medal', 'flag', 'team', 'player', 'coach', 'referee', 'crowd', 'fan', 'cheer', 'dance',
-            'music', 'song', 'beat', 'note', 'chord', 'melody', 'harmony', 'rhythm', 'tempo', 'voice',
-            'singer', 'band', 'stage', 'light', 'sound', 'speaker', 'screen', 'movie', 'film', 'show',
-            'actor', 'director', 'action', 'drama', 'comedy', 'horror', 'mystery', 'romance', 'fantasy', 'adventure',
-            'western', 'thriller', 'cartoon', 'anime', 'hero', 'villain', 'monster', 'ghost', 'zombie', 'vampire',
-            'witch', 'wizard', 'fairy', 'dragon', 'unicorn', 'mermaid', 'giant', 'dwarf', 'elf', 'goblin',
-            'troll', 'ogre', 'demon', 'angel', 'knight', 'king', 'queen', 'prince', 'princess', 'warrior',
-            'archer', 'mage', 'thief', 'ninja', 'pirate', 'cowboy', 'astronaut', 'doctor', 'nurse', 'teacher',
-            'student', 'artist', 'painter', 'sculptor', 'writer', 'poet', 'author', 'chef', 'baker', 'farmer',
-            'carpenter', 'plumber', 'electrician', 'mechanic', 'driver', 'pilot', 'sailor', 'soldier', 'police', 'firefighter',
-            'scientist', 'engineer', 'programmer', 'designer', 'musician', 'dancer', 'athlete', 'swimmer', 'runner', 'jumper',
-            'climber', 'skier', 'skater', 'surfer', 'diver', 'boxer', 'wrestler', 'fighter', 'racer'
-        ],
-        multi: [
-            'hot dog', 'ice cream', 'fire truck', 'police car', 'school bus', 'video game', 'credit card', 'cell phone',
-            'laptop computer', 'coffee cup', 'wine glass', 'tennis ball', 'basketball hoop', 'soccer ball', 'baseball bat', 'golf club',
-            'fishing rod', 'swimming pool', 'roller coaster', 'ferris wheel', 'merry go round', 'bumper car', 'haunted house', 'candy cane',
-            'gingerbread man', 'santa claus', 'easter bunny', 'tooth fairy', 'teddy bear', 'rocking horse', 'jack in the box', 'rubiks cube',
-            'lego brick', 'toy car', 'stuffed animal', 'action figure', 'barbie doll', 'chess board', 'playing card', 'dice roll',
-            'coin flip', 'rock paper scissors', 'tic tac toe', 'hide and seek', 'simon says', 'red light green light', 'duck duck goose', 'musical chairs',
-            'hot potato', 'freeze tag', 'capture the flag', 'treasure hunt', 'scavenger hunt', 'egg hunt', 'costume party', 'birthday cake',
-            'wedding cake', 'baby shower', 'bridal shower', 'graduation cap', 'report card', 'science fair', 'spelling bee', 'talent show',
-            'fashion show', 'beauty pageant', 'dog show', 'cat show', 'horse race', 'car race', 'boat race', 'bike race',
-            'foot race', 'relay race', 'marathon run', 'obstacle course', 'triathlon race', 'decathlon event', 'jumping jack', 'push up',
-            'sit up', 'pull up', 'chin up', 'leg lift', 'arm curl', 'bench press', 'squat lift', 'dead lift',
-            'mountain climber', 'burpee exercise', 'plank hold', 'bridge pose', 'tree pose', 'warrior pose', 'downward dog', 'child pose',
-            'cobra pose', 'lotus position', 'meditation pose', 'tai chi', 'kung fu', 'karate chop', 'roundhouse kick', 'spinning kick',
-            'flying kick', 'drop kick', 'body slam', 'pile driver', 'clothes line', 'choke hold', 'arm bar', 'leg lock',
-            'head lock', 'full nelson', 'bear hug', 'irish whip', 'figure four', 'sleeper hold', 'boston crab', 'dragon screw',
-            'tiger knee', 'monkey flip', 'gorilla press', 'elephant splash', 'snake eyes', 'spider walk', 'crab walk', 'frog jump',
-            'bunny hop', 'kangaroo kick', 'donkey kick', 'chicken dance', 'turkey trot', 'penguin walk', 'flamingo stand', 'swan dive',
-            'eagle spread', 'hawk eye', 'cat stretch', 'dog pound', 'mouse trap', 'rat race', 'pig pen', 'cow bell',
-            'horse shoe', 'fish hook', 'shark fin', 'whale tail', 'dolphin jump', 'seal clap', 'walrus flop', 'octopus arm',
-            'jellyfish float', 'starfish pose', 'sea horse', 'sea lion', 'sea turtle', 'sea urchin', 'sea weed', 'coral reef',
-            'tidal wave', 'rip tide', 'high tide', 'low tide', 'rough sea', 'calm water', 'still pond', 'running water',
-            'flowing river', 'rushing stream', 'babbling brook', 'water fall', 'rain drop', 'snow flake', 'ice berg', 'glacier ice',
-            'frozen lake', 'melting snow', 'spring thaw', 'summer heat', 'autumn leaf', 'winter cold', 'warm breeze', 'cool wind',
-            'hot air', 'cold front', 'storm cloud', 'thunder storm', 'light rain', 'heavy rain', 'acid rain', 'freezing rain',
-            'sleet fall', 'hail storm', 'dust storm', 'sand storm', 'wind storm', 'ice storm', 'snow storm', 'blizzard warning',
-            'tornado warning', 'hurricane warning', 'flood warning', 'drought warning'
-        ]
-    };
+// Skribbl.io Word Helper Bookmarklet Script (refined)
+//
+// 1) Host this file somewhere public (GitHub Pages, gist raw, etc.)
+// 2) Bookmarklet URL example:
+// javascript:(()=>{const s=document.createElement('script');s.src='https://YOUR_HOST/skribbl-helper.js?'+Date.now();document.head.appendChild(s);})();
+//
+// This helper fetches the canonical skribbl word list from:
+// https://gist.github.com/mvark/9e0682c62d75625441f6ded366245203
+(function skribblWordHelper() {
+  'use strict';
 
-    function getCluePattern() {
-        const clueElement = document.querySelector('.word');
-        if (!clueElement) return null;
-        return clueElement.textContent.trim();
+  const UI_ID = 'skribbl-word-helper-ui';
+  const STYLE_ID = 'skribbl-word-helper-style';
+  const WORDS_CACHE_KEY = 'skribblWordHelper.words.v1';
+  const CACHE_TS_KEY = 'skribblWordHelper.words.ts.v1';
+  const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+
+  const WORD_SOURCES = [
+    'https://gist.githubusercontent.com/mvark/9e0682c62d75625441f6ded366245203/raw/skribblio-word-list',
+    'https://gist.githubusercontent.com/mvark/9e0682c62d75625441f6ded366245203/raw',
+    'https://gist.github.com/mvark/9e0682c62d75625441f6ded366245203/raw'
+  ];
+
+  const state = {
+    words: [],
+    wordsReady: false,
+    loading: false,
+    lastPattern: '',
+    autoRefreshTimer: null,
+    maxResults: 150
+  };
+
+  function normalizeText(value) {
+    return String(value || '')
+      .toLowerCase()
+      .replace(/[’']/g, '')
+      .replace(/[^a-z\s_-]/g, '')
+      .replace(/[_-]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function removeUI() {
+    const oldUI = document.getElementById(UI_ID);
+    if (oldUI) oldUI.remove();
+    const oldStyle = document.getElementById(STYLE_ID);
+    if (oldStyle) oldStyle.remove();
+  }
+
+  function ensureStyles() {
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = `
+      #${UI_ID} {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 2147483647;
+        width: min(400px, 94vw);
+        max-height: 94vh;
+        overflow: auto;
+        border: 1px solid #27315f;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #141b35, #0f1427);
+        color: #edf1ff;
+        box-shadow: 0 18px 40px rgba(0,0,0,.45);
+        font: 13px/1.4 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        padding: 12px;
+      }
+      #${UI_ID} * { box-sizing: border-box; }
+      #${UI_ID} h2 {
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+      }
+      #${UI_ID} .muted { color: #a8b0d3; font-size: 12px; }
+      #${UI_ID} .section { margin-top: 10px; }
+      #${UI_ID} .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+      #${UI_ID} button {
+        border: 0;
+        border-radius: 8px;
+        padding: 9px;
+        cursor: pointer;
+        color: #fff;
+        font-weight: 600;
+        background: #364aa8;
+      }
+      #${UI_ID} button.secondary { background: #2a335f; }
+      #${UI_ID} button:disabled { opacity: .55; cursor: not-allowed; }
+      #${UI_ID} .status {
+        margin-top: 10px;
+        font-size: 12px;
+        white-space: pre-line;
+        color: #b7c0e4;
+      }
+      #${UI_ID} .pattern {
+        margin-top: 10px;
+        border: 1px solid #2f3a73;
+        border-radius: 8px;
+        padding: 8px;
+        background: #0d1224;
+      }
+      #${UI_ID} .list {
+        margin-top: 10px;
+        display: grid;
+        gap: 6px;
+      }
+      #${UI_ID} .item {
+        border: 1px solid #2a366f;
+        border-radius: 8px;
+        padding: 7px 9px;
+        background: #111834;
+        cursor: pointer;
+      }
+      #${UI_ID} .item:hover { transform: translateX(2px); }
+      #${UI_ID} .item small { color: #9ba7d9; }
+      #${UI_ID} input[type='number'] {
+        width: 100%;
+        background: #0e1430;
+        border: 1px solid #2f3a73;
+        color: #edf1ff;
+        border-radius: 8px;
+        padding: 8px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function setStatus(message, isError = false) {
+    const el = document.querySelector(`#${UI_ID} .status`);
+    if (!el) return;
+    el.textContent = message;
+    el.style.color = isError ? '#ff9fb1' : '#b7c0e4';
+  }
+
+  function parseWordsFromText(raw) {
+    return Array.from(
+      new Set(
+        raw
+          .split(/\r?\n/)
+          .map((line) => normalizeText(line))
+          .filter(Boolean)
+      )
+    );
+  }
+
+  function saveCache(words) {
+    try {
+      localStorage.setItem(WORDS_CACHE_KEY, JSON.stringify(words));
+      localStorage.setItem(CACHE_TS_KEY, String(Date.now()));
+    } catch (_) {
+      // ignore localStorage quota/privacy mode errors
+    }
+  }
+
+  function loadCache() {
+    try {
+      const raw = localStorage.getItem(WORDS_CACHE_KEY);
+      const ts = Number(localStorage.getItem(CACHE_TS_KEY) || 0);
+      if (!raw || !ts || Date.now() - ts > CACHE_TTL_MS) return null;
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || !parsed.length) return null;
+      return parsed;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function fetchWordList() {
+    if (state.loading) return;
+    state.loading = true;
+    setStatus('Loading word list...');
+
+    const cached = loadCache();
+    if (cached) {
+      state.words = cached;
+      state.wordsReady = true;
+      setStatus(`Loaded ${cached.length} words from cache.`);
+      renderMatches();
     }
 
-    function analyzePattern(pattern) {
-        if (!pattern || pattern === '') return null;
-        
-        const wordCount = (pattern.match(/\s+/g) || []).length + 1;
-        const totalLength = pattern.replace(/\s+/g, '').length;
-        
-        return {
-            wordCount,
-            totalLength,
-            pattern
-        };
-    }
+    let lastError = null;
+    for (const url of WORD_SOURCES) {
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        const words = parseWordsFromText(text);
+        if (words.length < 1000) throw new Error('Word list looked too small.');
 
-    function filterWords(analysis) {
-        if (!analysis) return { single: [], multi: [] };
-        
-        const filtered = {
-            single: [],
-            multi: []
-        };
-
-        if (analysis.wordCount === 1) {
-            // Filter single words
-            wordLists.single.forEach(word => {
-                if (word.replace(/\s+/g, '').length === analysis.totalLength) {
-                    filtered.single.push(word);
-                }
-            });
-        } else {
-            // Filter multi-word phrases
-            wordLists.multi.forEach(word => {
-                const wordParts = word.split(' ');
-                if (wordParts.length === analysis.wordCount) {
-                    const lengths = wordParts.map(w => w.length);
-                    const patternParts = analysis.pattern.split(/\s+/).map(p => p.length);
-                    
-                    if (JSON.stringify(lengths) === JSON.stringify(patternParts)) {
-                        filtered.multi.push(word);
-                    }
-                }
-            });
-        }
-
-        return filtered;
-    }
-
-    function createUI(filtered, analysis) {
-        // Remove existing UI if present
-        let existingUI = document.getElementById('skribbl-helper-ui');
-        if (existingUI) existingUI.remove();
-
-        const ui = document.createElement('div');
-        ui.id = 'skribbl-helper-ui';
-        ui.style.cssText = 'position:fixed;top:10px;right:10px;background:white;border:3px solid #667eea;border-radius:15px;padding:20px;max-width:350px;max-height:80vh;overflow-y:auto;z-index:99999;box-shadow:0 10px 40px rgba(0,0,0,0.3);font-family:Arial,sans-serif;';
-
-        // Title
-        const title = document.createElement('div');
-        title.style.cssText = 'font-size:20px;font-weight:bold;color:#667eea;margin-bottom:15px;text-align:center;border-bottom:2px solid #667eea;padding-bottom:10px;';
-        title.textContent = '🎨 Word Helper';
-        ui.appendChild(title);
-
-        // Pattern info
-        if (analysis) {
-            const info = document.createElement('div');
-            info.style.cssText = 'background:#f8f9ff;padding:10px;border-radius:8px;margin-bottom:15px;font-size:14px;color:#333;';
-            info.innerHTML = `<strong>Pattern:</strong> ${analysis.pattern}<br><strong>Words:</strong> ${analysis.wordCount}<br><strong>Length:</strong> ${analysis.totalLength}`;
-            ui.appendChild(info);
-        }
-
-        // Single words section
-        if (filtered.single.length > 0) {
-            const singleTitle = document.createElement('div');
-            singleTitle.style.cssText = 'font-size:16px;font-weight:bold;color:#764ba2;margin-bottom:10px;';
-            singleTitle.textContent = `📝 Single Words (${filtered.single.length})`;
-            ui.appendChild(singleTitle);
-
-            filtered.single.forEach(word => {
-                const wordEl = document.createElement('div');
-                wordEl.style.cssText = 'background:#f0f0ff;padding:8px 12px;margin:5px 0;border-radius:8px;border-left:4px solid #667eea;cursor:pointer;font-size:14px;transition:transform 0.2s;';
-                wordEl.textContent = word;
-                wordEl.onmouseover = () => wordEl.style.transform = 'translateX(5px)';
-                wordEl.onmouseout = () => wordEl.style.transform = 'translateX(0)';
-                wordEl.onclick = () => {
-                    navigator.clipboard.writeText(word);
-                    wordEl.style.background = '#d4edda';
-                    setTimeout(() => wordEl.style.background = '#f0f0ff', 1000);
-                };
-                ui.appendChild(wordEl);
-            });
-        }
-
-        // Multi words section
-        if (filtered.multi.length > 0) {
-            if (filtered.single.length > 0) {
-                const divider = document.createElement('div');
-                divider.style.cssText = 'height:2px;background:linear-gradient(90deg,#667eea,#764ba2);margin:15px 0;border-radius:2px;';
-                ui.appendChild(divider);
-            }
-
-            const multiTitle = document.createElement('div');
-            multiTitle.style.cssText = 'font-size:16px;font-weight:bold;color:#764ba2;margin-bottom:10px;';
-            multiTitle.textContent = `📝 Multi Words (${filtered.multi.length})`;
-            ui.appendChild(multiTitle);
-
-            filtered.multi.forEach(word => {
-                const wordEl = document.createElement('div');
-                wordEl.style.cssText = 'background:#fff0f0;padding:8px 12px;margin:5px 0;border-radius:8px;border-left:4px solid #764ba2;cursor:pointer;font-size:14px;transition:transform 0.2s;';
-                wordEl.textContent = word;
-                wordEl.onmouseover = () => wordEl.style.transform = 'translateX(5px)';
-                wordEl.onmouseout = () => wordEl.style.transform = 'translateX(0)';
-                wordEl.onclick = () => {
-                    navigator.clipboard.writeText(word);
-                    wordEl.style.background = '#d4edda';
-                    setTimeout(() => wordEl.style.background = '#fff0f0', 1000);
-                };
-                ui.appendChild(wordEl);
-            });
-        }
-
-        // No results message
-        if (filtered.single.length === 0 && filtered.multi.length === 0) {
-            const noResults = document.createElement('div');
-            noResults.style.cssText = 'text-align:center;color:#999;padding:20px;font-size:14px;';
-            noResults.textContent = 'No matching words found 😢';
-            ui.appendChild(noResults);
-        }
-
-        // Close button
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = '✖ Close';
-        closeBtn.style.cssText = 'width:100%;padding:12px;margin-top:15px;background:#667eea;color:white;border:none;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer;transition:background 0.2s;';
-        closeBtn.onmouseover = () => closeBtn.style.background = '#5568d3';
-        closeBtn.onmouseout = () => closeBtn.style.background = '#667eea';
-        closeBtn.onclick = () => ui.remove();
-        ui.appendChild(closeBtn);
-
-        document.body.appendChild(ui);
-    }
-
-    // Main execution
-    const pattern = getCluePattern();
-    if (!pattern) {
-        alert('⚠️ Could not find the word clue! Make sure you\'re on skribbl.io and a round is active.');
+        state.words = words;
+        state.wordsReady = true;
+        saveCache(words);
+        setStatus(`Loaded ${words.length} words from gist.`);
+        renderMatches();
+        state.loading = false;
         return;
+      } catch (err) {
+        lastError = err;
+      }
     }
 
-    const analysis = analyzePattern(pattern);
-    const filtered = filterWords(analysis);
-    createUI(filtered, analysis);
+    state.loading = false;
+    if (!state.wordsReady) {
+      setStatus(`Failed to load words: ${lastError ? lastError.message : 'unknown error'}`, true);
+    } else {
+      setStatus(`Using cached words. Refresh failed: ${lastError ? lastError.message : 'unknown error'}`, true);
+    }
+  }
+
+  function readPatternCandidate(el) {
+    const txt = normalizeText(el.textContent || '');
+    if (!txt) return null;
+
+    const hasUnderscoreStyle = /[_*]/.test(el.textContent || '');
+    const mostlyLettersSpacesUnderscores = /^[a-z\s_]+$/.test(txt.replace(/_/g, '_'));
+    if (!hasUnderscoreStyle && !mostlyLettersSpacesUnderscores) return null;
+
+    const compact = txt.replace(/\s+/g, ' ').trim();
+    if (!compact) return null;
+
+    const words = compact.split(' ');
+    if (!words.every((w) => /^_+$/.test(w) || /^[a-z_]+$/.test(w))) return null;
+
+    return compact;
+  }
+
+  function getCluePattern() {
+    const selectors = [
+      '.word',
+      '.wordContainer',
+      '.word__container',
+      '[class*="word"]',
+      '[id*="word"]',
+      '.current-word',
+      '.hud .word'
+    ];
+
+    for (const selector of selectors) {
+      const nodes = document.querySelectorAll(selector);
+      for (const node of nodes) {
+        const candidate = readPatternCandidate(node);
+        if (candidate && candidate.includes('_')) return candidate;
+      }
+    }
+
+    const all = document.querySelectorAll('div,span,p,strong');
+    for (const node of all) {
+      const candidate = readPatternCandidate(node);
+      if (candidate && candidate.includes('_')) return candidate;
+    }
+
+    return null;
+  }
+
+  function patternToRegex(pattern) {
+    const cleaned = normalizeText(pattern)
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const escaped = cleaned.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regexBody = escaped
+      .replace(/\_/g, '[a-z]')
+      .replace(/\s/g, '\\s');
+
+    return new RegExp(`^${regexBody}$`);
+  }
+
+  function scoreWord(word, pattern) {
+    // Prefer words that match already-revealed letters at the beginning of each token
+    const wordParts = word.split(' ');
+    const patternParts = pattern.split(' ');
+    let score = 0;
+
+    for (let i = 0; i < Math.min(wordParts.length, patternParts.length); i += 1) {
+      const wp = wordParts[i];
+      const pp = patternParts[i];
+      for (let j = 0; j < Math.min(wp.length, pp.length); j += 1) {
+        if (/[a-z]/.test(pp[j]) && wp[j] === pp[j]) score += 3;
+      }
+      if (wp[0] === pp[0] && /[a-z]/.test(pp[0])) score += 2;
+    }
+
+    // Slight preference for commonly shorter words
+    score -= Math.max(0, word.length - 14) * 0.1;
+    return score;
+  }
+
+  function matchWords(pattern) {
+    if (!state.wordsReady || !pattern) return [];
+
+    const normalizedPattern = normalizeText(pattern);
+    const regex = patternToRegex(normalizedPattern);
+    const patternParts = normalizedPattern.split(' ');
+
+    const matches = [];
+
+    for (const word of state.words) {
+      const w = normalizeText(word);
+      if (!w) continue;
+
+      const wParts = w.split(' ');
+      if (wParts.length !== patternParts.length) continue;
+
+      let sameLengths = true;
+      for (let i = 0; i < wParts.length; i += 1) {
+        if (wParts[i].length !== patternParts[i].length) {
+          sameLengths = false;
+          break;
+        }
+      }
+      if (!sameLengths) continue;
+
+      if (regex.test(w)) {
+        matches.push({ word: w, score: scoreWord(w, normalizedPattern) });
+      }
+    }
+
+    matches.sort((a, b) => b.score - a.score || a.word.localeCompare(b.word));
+    return matches.slice(0, state.maxResults);
+  }
+
+  async function copyText(value) {
+    try {
+      await navigator.clipboard.writeText(value);
+      setStatus(`Copied: ${value}`);
+    } catch (_) {
+      setStatus(`Could not copy automatically. Word: ${value}`, true);
+    }
+  }
+
+  function renderMatches() {
+    const listEl = document.querySelector(`#${UI_ID} .list`);
+    const patternEl = document.querySelector(`#${UI_ID} .pattern`);
+    if (!listEl || !patternEl) return;
+
+    const pattern = getCluePattern();
+    state.lastPattern = pattern || '';
+
+    if (!pattern) {
+      patternEl.innerHTML = '<strong>Pattern:</strong> not found';
+      listEl.innerHTML = '<div class="muted">Could not detect the clue pattern yet. Start a round and click Refresh.</div>';
+      return;
+    }
+
+    const matches = matchWords(pattern);
+    patternEl.innerHTML = `<strong>Pattern:</strong> ${pattern}<br><span class="muted">Matches: ${matches.length}${state.wordsReady ? '' : ' (word list still loading...)'}</span>`;
+
+    if (!matches.length) {
+      listEl.innerHTML = '<div class="muted">No matches yet. Wait for more letters or adjust max results.</div>';
+      return;
+    }
+
+    listEl.innerHTML = '';
+    for (const match of matches) {
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.innerHTML = `<div><strong>${match.word}</strong></div><small>click to copy</small>`;
+      item.addEventListener('click', () => copyText(match.word));
+      listEl.appendChild(item);
+    }
+  }
+
+  function startAutoRefresh() {
+    stopAutoRefresh();
+    state.autoRefreshTimer = window.setInterval(renderMatches, 1500);
+  }
+
+  function stopAutoRefresh() {
+    if (state.autoRefreshTimer) {
+      clearInterval(state.autoRefreshTimer);
+      state.autoRefreshTimer = null;
+    }
+  }
+
+  function buildUI() {
+    removeUI();
+    ensureStyles();
+
+    const root = document.createElement('div');
+    root.id = UI_ID;
+    root.innerHTML = `
+      <h2>
+        🎯 Skribbl Word Helper
+        <button id="${UI_ID}-close" class="secondary" style="padding:4px 8px">✕</button>
+      </h2>
+      <div class="muted section">Uses the mvark gist word list and live clue pattern matching.</div>
+      <div class="controls">
+        <button id="${UI_ID}-refresh">Refresh Pattern</button>
+        <button id="${UI_ID}-reload" class="secondary">Reload Word List</button>
+      </div>
+      <div class="section">
+        <label class="muted" for="${UI_ID}-max">Max results</label>
+        <input id="${UI_ID}-max" type="number" min="10" max="500" value="150" />
+      </div>
+      <div class="pattern"></div>
+      <div class="status">Initializing...</div>
+      <div class="list"></div>
+    `;
+
+    document.body.appendChild(root);
+
+    document.getElementById(`${UI_ID}-close`).addEventListener('click', () => {
+      stopAutoRefresh();
+      removeUI();
+    });
+
+    document.getElementById(`${UI_ID}-refresh`).addEventListener('click', renderMatches);
+
+    document.getElementById(`${UI_ID}-reload`).addEventListener('click', async () => {
+      try {
+        localStorage.removeItem(WORDS_CACHE_KEY);
+        localStorage.removeItem(CACHE_TS_KEY);
+      } catch (_) {
+        // ignore
+      }
+      state.wordsReady = false;
+      state.words = [];
+      await fetchWordList();
+      renderMatches();
+    });
+
+    document.getElementById(`${UI_ID}-max`).addEventListener('change', (event) => {
+      const value = Number(event.target.value);
+      state.maxResults = Number.isFinite(value) ? Math.min(500, Math.max(10, value)) : 150;
+      event.target.value = String(state.maxResults);
+      renderMatches();
+    });
+
+    startAutoRefresh();
+    fetchWordList().then(renderMatches);
+  }
+
+  buildUI();
 })();
